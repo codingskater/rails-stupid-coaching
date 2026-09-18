@@ -1,18 +1,31 @@
-<div class="text-bg-primary p-3 d-flex justify-content-center"><h1>Stupid Coaching</h1></div>
-
-<div class="text-bg-light p-3 d-flex justify-content-center">
-  <i class="fa-solid fa-walkie-talkie"></i>
-  <%= params["question"]%>
-  <p>  --You</p>
+<div class="text-bg-primary p-3 d-flex justify-content-center">
+  <h1>Stupid Coaching</h1>
 </div>
-<div class="text-bg-dark p-3 d-flex justify-content-center">
-  <i class="fa-solid fa-walkie-talkie"></i>
-  <%= @answer %>
-  <p>  --Coach</p>
-</div>
-
-<div class="d-flex justify-content-center">
-  <%= link_to ask_path do %>
-  <i class="fa-solid fa-circle-question"></i>
-  Consult Again
-  <% end %></div>
+<% @conversation.each do |exchange| %>
+  <div class="text-bg-light p-3 d-flex justify-content-center">
+    <i class="fa-solid fa-walkie-talkie"></i>
+    <%= exchange["question"] %>
+    <p>  --You</p>
+  </div>
+  <div class="text-bg-dark p-3 d-flex justify-content-center">
+    <i class="fa-solid fa-walkie-talkie"></i>
+    <%= exchange["answer"] %>
+    <p>  --Coach</p>
+  </div>
+<% end %>
+<% unless @answer == "Great!" %>
+  <div class="p-3 d-flex justify-content-center">
+    <form action="/answer" method="get" data-turbo="false">
+      <label for="question">Consult again!</label>
+      <input type="text" id="question" name="question">
+      <input type="submit" value="Ask!">
+    </form>
+  </div>
+<% else %>
+  <div class="d-flex justify-content-center">
+    <%= link_to ask_path do %>
+      <i class="fa-solid fa-circle-question"></i>
+      Consult Again
+    <% end %>
+  </div>
+<% end %>
